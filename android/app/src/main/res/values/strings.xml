@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ScrimRepro</string>
+    <string name="title_activity_main">ScrimRepro</string>
+    <string name="package_name">com.example.scrimrepro</string>
+    <string name="custom_url_scheme">com.example.scrimrepro</string>
+</resources>

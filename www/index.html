@@ -2,12 +2,18 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
+<script>
+  // "No cover" mode drops viewport-fit=cover, which makes SystemBars pad the native view instead of passing the insets through.
+  const cover = localStorage.getItem('cover') !== '0';
+  document.write('<meta name="viewport" content="' + (cover ? 'viewport-fit=cover, ' : '') + 'width=device-width, initial-scale=1">');
+</script>
 <title>SystemBars scrim repro</title>
 <style>
   html, body { margin: 0; font: 20px sans-serif; }
   body { padding-top: env(safe-area-inset-top); }
   #info { padding: 12px 16px; font: 14px monospace; background: #fff; color: #000; white-space: pre; }
+  #controls { display: flex; gap: 8px; padding: 8px 16px; background: #fff; }
+  #controls button, #controls input { font: 18px sans-serif; height: 48px; flex: 1; min-width: 0; }
   .row { height: 64px; display: flex; align-items: center; padding-left: 16px; }
   .row:nth-child(odd)  { background: #1e3a8a; color: #fff; }
   .row:nth-child(even) { background: #f59e0b; color: #000; }
@@ -15,6 +21,11 @@
 </head>
 <body>
 <div id="info"></div>
+<div id="controls">
+  <button id="cover" onclick="localStorage.setItem('cover', '1'); location.reload()">cover</button>
+  <button id="nocover" onclick="localStorage.setItem('cover', '0'); location.reload()">no cover</button>
+  <input id="field" placeholder="keyboard">
+</div>
 <div id="rows"></div>
 <script>
   // Alternating dark/light rows make it obvious whether the navigation bar has a scrim behind its buttons.
@@ -37,7 +48,7 @@
       'env(safe-area-inset-*) top/bottom: ' + env.top + ' / ' + env.bottom + '\n' +
       '--safe-area-inset-*    top/bottom: ' + (css.getPropertyValue('--safe-area-inset-top') || '-') +
       ' / ' + (css.getPropertyValue('--safe-area-inset-bottom') || '-') + '\n' +
-      'window.innerHeight: ' + innerHeight;
+      'window.innerHeight: ' + innerHeight + '   viewport-fit=cover: ' + (cover ? 'yes' : 'no');
   }
   show();
   setInterval(show, 500);

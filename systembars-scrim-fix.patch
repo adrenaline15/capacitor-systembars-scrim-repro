@@ -1,6 +1,8 @@
+diff --git a/node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/plugin/SystemBars.java b/node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/plugin/SystemBars.java
+index 4fff13f..4be63b4 100644
 --- a/node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/plugin/SystemBars.java
 +++ b/node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/plugin/SystemBars.java
-@@ -190,7 +190,11 @@
+@@ -189,7 +189,15 @@ public class SystemBars extends Plugin {
  
          View view = getActivity().getWindow().getDecorView();
  
@@ -10,6 +12,28 @@
 +            // backgrounds and the 3-button navigation bar scrim. Let it run, and continue with the insets it
 +            // leaves, so the space it already reserves for the system bars is not padded a second time.
 +            WindowInsetsCompat insets = WindowInsetsCompat.toWindowInsetsCompat(v.onApplyWindowInsets(windowInsets.toWindowInsets()), v);
++            // Pad the WebView's parent rather than the DecorView: the DecorView also holds the system bar
++            // background views, and padding it would move them away from the screen edges into the content.
++            View content = (View) getBridge().getWebView().getParent();
++
              boolean shouldPassthroughInsets = getWebViewMajorVersion() >= WEBVIEW_VERSION_WITH_SAFE_AREA_FIX && hasViewportCover;
  
              Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+@@ -202,7 +210,7 @@ public class SystemBars extends Plugin {
+ 
+             if (shouldPassthroughInsets) {
+                 // We need to correct for a possible shown IME
+-                v.setPadding(0, 0, 0, keyboardVisible ? imeInsets.bottom : 0);
++                content.setPadding(0, 0, 0, keyboardVisible ? imeInsets.bottom : 0);
+ 
+                 WindowInsetsCompat newInsets = withoutOverlayingKeyboard(
+                     new WindowInsetsCompat.Builder(insets).setInsets(
+@@ -223,7 +231,7 @@ public class SystemBars extends Plugin {
+             }
+ 
+             // We need to correct for a possible shown IME
+-            v.setPadding(
++            content.setPadding(
+                 systemBarsInsets.left,
+                 systemBarsInsets.top,
+                 systemBarsInsets.right,

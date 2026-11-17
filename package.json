@@ -4,9 +4,9 @@
   "private": true,
   "description": "Repro: Capacitor SystemBars drops the Android 3-button navigation bar scrim since 8.5.2",
   "dependencies": {
-    "@capacitor/android": "8.6.0",
-    "@capacitor/cli": "8.6.0",
-    "@capacitor/core": "8.6.0",
+    "@capacitor/android": "8.6.2",
+    "@capacitor/cli": "8.6.2",
+    "@capacitor/core": "8.6.2",
     "fix": "0.0.6",
     "plain": "0.0.0"
   }

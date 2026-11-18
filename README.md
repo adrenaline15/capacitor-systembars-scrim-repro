@@ -66,3 +66,4 @@ A listener is called *instead of* the view's own `onApplyWindowInsets`. For the 
 `systembars-scrim-fix.patch` (the full change from #8725):
 1. calls the DecorView's own `onApplyWindowInsets` first and continues with the insets it returns;
 2. applies SystemBars' padding to the WebView's parent instead of the DecorView, so the system bar backgrounds stay at the screen edges.
+3. skips the padding while the WebView is detached from its layout (its parent is then null).

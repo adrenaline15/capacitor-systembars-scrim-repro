@@ -1,8 +1,8 @@
 diff --git a/node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/plugin/SystemBars.java b/node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/plugin/SystemBars.java
-index 4fff13f..4be63b4 100644
+index 4fff13f..0a254d3 100644
 --- a/node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/plugin/SystemBars.java
 +++ b/node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/plugin/SystemBars.java
-@@ -189,7 +189,15 @@ public class SystemBars extends Plugin {
+@@ -189,7 +189,20 @@ public class SystemBars extends Plugin {
  
          View view = getActivity().getWindow().getDecorView();
  
@@ -15,11 +15,16 @@ index 4fff13f..4be63b4 100644
 +            // Pad the WebView's parent rather than the DecorView: the DecorView also holds the system bar
 +            // background views, and padding it would move them away from the screen edges into the content.
 +            View content = (View) getBridge().getWebView().getParent();
++            if (content == null) {
++                // The WebView is not attached (e.g. a Fragment-hosted bridge whose view was destroyed),
++                // so there is nothing to pad.
++                return insets;
++            }
 +
              boolean shouldPassthroughInsets = getWebViewMajorVersion() >= WEBVIEW_VERSION_WITH_SAFE_AREA_FIX && hasViewportCover;
  
              Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
-@@ -202,7 +210,7 @@ public class SystemBars extends Plugin {
+@@ -202,7 +215,7 @@ public class SystemBars extends Plugin {
  
              if (shouldPassthroughInsets) {
                  // We need to correct for a possible shown IME
@@ -28,7 +33,7 @@ index 4fff13f..4be63b4 100644
  
                  WindowInsetsCompat newInsets = withoutOverlayingKeyboard(
                      new WindowInsetsCompat.Builder(insets).setInsets(
-@@ -223,7 +231,7 @@ public class SystemBars extends Plugin {
+@@ -223,7 +236,7 @@ public class SystemBars extends Plugin {
              }
  
              // We need to correct for a possible shown IME
